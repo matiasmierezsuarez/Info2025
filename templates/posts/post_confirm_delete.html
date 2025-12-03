@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="alert alert-danger text-center">
+    <h3>¿Estás seguro de que quieres eliminar "{{ object.titulo }}"?</h3>
+    <form method="post">
+        {% csrf_token %}
+        <a href="{% url 'apps.posts:post_individual' object.id %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+    </form>
+</div>
+{% endblock %}

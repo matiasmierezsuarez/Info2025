@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="p-5 mb-4 bg-white rounded-3 shadow-sm text-center">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Bienvenido al Mundo Anime</h1>
+        <p class="col-md-8 fs-4 mx-auto">Noticias, reseñas y todo sobre tus series favoritas en un solo lugar.</p>
+        <a href="{% url 'apps.posts:posts' %}" class="btn btn-primary btn-lg" type="button">Ver Artículos</a>
+    </div>
+</div>
+{% endblock %}

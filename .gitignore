@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+env/
+venv/
+.venv/
+venv*/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Byte-compiled / distribution
+build/
+dist/
+*.egg-info/
+
+# Editor/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Data / secrets
+*.sqlite3
+*.db
+.env
+secrets.json

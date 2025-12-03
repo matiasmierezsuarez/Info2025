@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">Filtrar</div>
+            <div class="card-body">
+                <h6 class="card-title">Categorías</h6>
+                <div class="list-group list-group-flush mb-3">
+                    <a href="{% url 'apps.posts:posts' %}" class="list-group-item list-group-item-action">Todas</a>
+                    {% for cat in categorias %}
+                        <a href="?categoria={{ cat.id }}" class="list-group-item list-group-item-action">{{ cat.nombre }}</a>
+                    {% endfor %}
+                </div>
+                
+                <h6 class="card-title">Orden</h6>
+                <div class="d-grid gap-2">
+                    <a href="?orden=nuevo" class="btn btn-outline-secondary btn-sm">Más Nuevos</a>
+                    <a href="?orden=antiguo" class="btn btn-outline-secondary btn-sm">Más Antiguos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <h2>Últimos Artículos</h2>
+        <hr>
+        {% for post in posts %}
+        <div class="card mb-3 shadow-sm">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% if post.imagen %}
+                        <img src="{{ post.imagen.url }}" class="img-fluid rounded-start" alt="{{ post.titulo }}" style="height: 200px; object-fit: cover; width: 100%;">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.titulo }}</h5>
+                        <p class="text-muted"><small>{{ post.categoria }} | {{ post.fecha|date:"d M Y" }}</small></p>
+                        <p class="card-text">{{ post.subtitulo }}</p>
+                        <a href="{% url 'apps.posts:post_individual' post.id %}" class="btn btn-dark btn-sm">Leer más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <div class="alert alert-warning">No hay artículos publicados aún.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
