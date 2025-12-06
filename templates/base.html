@@ -24,12 +24,14 @@
                     </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
+                        {%if user.is_superuser%}
                         <li class="nav-item">
                             <a class="nav-link btn btn-outline-light btn-sm mx-1" href="{% url 'apps.posts:post_crear' %}">➕ Nuevo Post</a>
                         </li>
+                        {%endif%}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                Hola, {{ user.username }}
+                                Hola {{ user.username }}
                             </a>
                             <ul class="dropdown-menu">
                                 <li>

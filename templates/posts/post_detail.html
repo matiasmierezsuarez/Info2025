@@ -13,7 +13,7 @@
                 en <span class="badge bg-secondary">{{ post.categoria }}</span>
             </p>
             
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and request.user == post.autor %}
                 <div class="mb-3">
                     <a href="{% url 'apps.posts:post_editar' post.id %}" class="btn btn-sm btn-outline-primary">Editar</a>
                     <a href="{% url 'apps.posts:post_eliminar' post.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
@@ -47,6 +47,12 @@
                         <h6 class="mb-0">{{ c.usuario.username }} <small class="text-muted">- {{ c.fecha|timesince }} atrás</small></h6>
                         <p class="mb-0">{{ c.texto }}</p>
                     </div>
+                        {% if user.is_authenticated and user == c.usuario %}
+                        <div class="flex-grow-1 ms-3">
+                            <a href="{% url 'apps.posts:comentario_editar' pk=c.pk %}">Editar</a>
+                            <a href="{% url 'apps.posts:comentario_eliminar' pk=c.pk %}">Eliminar</a>
+                        </div>
+                        {% endif %}
                 </div>
             {% empty %}
                 <p>Sé el primero en comentar.</p>
