@@ -21,6 +21,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'apps.posts:posts' %}">Artículos</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'apps.contacto:contacto' %}">Contacto</a>
+                    </li>
                     </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}

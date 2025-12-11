@@ -11,3 +11,69 @@ body {
 .mt-4 {
     min-height: 80vh;
 }
+
+/* desde acá empieza el cambio */
+/* Contenedor principal oscuro */
+.contact-dark-section {
+    background-color: #2c3e50; /* Usamos el color de tu footer para consistencia */
+    /* Opcional: Un gradiente sutil para darle profundidad */
+    background: linear-gradient(145deg, #2c3e50 0%, #1a252f 100%);
+    border-radius: 1rem;
+    padding: 3rem 1.5rem;
+    color: white;
+}
+
+/* Inputs personalizados estilo "Glass" */
+.form-control-dark {
+    background-color: rgba(255, 255, 255, 0.05); /* Fondo semitransparente (bg-white/5) */
+    border: 1px solid rgba(255, 255, 255, 0.2);   /* Borde sutil (border-white/20) */
+    color: #fff !important;                        /* Texto blanco */
+    padding: 0.8rem 1rem;
+    border-radius: 0.5rem;
+}
+
+/* Placeholder color (Bootstrap necesita prefijos) */
+.form-control-dark::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Efecto al hacer clic en el input */
+.form-control-dark:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #ff6b6b; /* Tu color de acento */
+    box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.25);
+}
+
+/* Etiquetas */
+.form-label-dark {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Botón de envío */
+.btn-anime-submit {
+    background-color: #ff6b6b;
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    border-radius: 0.5rem;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-anime-submit:hover {
+    background-color: #ff4757;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+.link-anime {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 500;
+}
+.link-anime:hover {
+    color: #ff4757;
+    text-decoration: underline;
+}
