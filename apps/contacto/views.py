@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect # Importamos redirect
+from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactoForm
+from django.contrib import messages
 
 def contacto(request):
     """
@@ -27,27 +28,23 @@ def contacto(request):
                 send_mail(
                     subject=asunto,
                     message=contenido_email,
-                    from_email=settings.DEFAULT_FROM_EMAIL, # O email si quieres usar el del usuario
-                    recipient_list=['tu_correo_destino@ejemplo.com'], # ¡CAMBIA ESTO!
+                    from_email=settings.DEFAULT_FROM_EMAIL, 
+                    recipient_list=['pobarinfo25@gmail.com'], 
                     fail_silently=False,
                 )
-                # Opcional: Agregar un mensaje de éxito con messages framework
-                # from django.contrib import messages
-                # messages.success(request, "Tu mensaje ha sido enviado con éxito.")
                 
-                # Redirigir a una página de éxito (o a la misma página)
+                # pagina de exito despues de enviar el correo
                 return redirect('apps.contacto:contacto_gracias') 
             
             except Exception as e:
-                # Opcional: Manejar errores de envío
-                # messages.error(request, f"Ocurrió un error al enviar el mensaje: {e}")
+                messages.error(request, f"Ocurrió un error al enviar el mensaje: {e}")
                 pass
     
     else:
-        # Si es GET, crear un formulario vacío
+        
         form = ContactoForm()
         
-    # Renderizar el template con el formulario
+    
     return render(request, 'contacto/contacto_form.html', {'form': form})
 
 def contacto_gracias(request):
