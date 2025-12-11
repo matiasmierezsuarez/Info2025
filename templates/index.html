@@ -1,12 +1,526 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<style>
+    /* Carousel de Banners Principales - Estilo Kudasai */
+    .banners-carousel {
+        position: relative;
+        height: 600px;
+        overflow: hidden;
+        margin-bottom: 3rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        border-radius: 0;
+    }
+
+    .banner-slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1.2s ease-in-out;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .banner-slide.active {
+        opacity: 1;
+        z-index: 1;
+    }
+
+    .banner-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, transparent 100%);
+        padding: 4rem 3rem 3rem;
+        color: white;
+    }
+
+    .banner-category {
+        display: inline-block;
+        background: var(--primary-color);
+        padding: 0.4rem 1rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        letter-spacing: 1px;
+    }
+
+    .banner-title {
+        font-size: 3rem;
+        font-weight: 900;
+        margin-bottom: 1rem;
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
+        line-height: 1.2;
+        max-width: 900px;
+    }
+
+    .banner-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+        line-height: 1.6;
+        max-width: 800px;
+        margin-bottom: 1.5rem;
+    }
+
+    .banner-meta {
+        display: flex;
+        gap: 1.5rem;
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin-top: 1rem;
+    }
+
+    .banner-meta i {
+        margin-right: 0.3rem;
+        color: var(--secondary-color);
+    }
+
+    /* Controles del Carousel */
+    .carousel-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        background: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+
+    .carousel-nav:hover {
+        background: var(--primary-color);
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-nav.prev {
+        left: 2rem;
+    }
+
+    .carousel-nav.next {
+        right: 2rem;
+    }
+
+    .carousel-controls {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 0.8rem;
+        z-index: 10;
+    }
+
+    .carousel-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.4);
+        cursor: pointer;
+        transition: all 0.4s;
+        border: 2px solid transparent;
+    }
+
+    .carousel-dot:hover {
+        background: rgba(255,255,255,0.7);
+        transform: scale(1.2);
+    }
+
+    .carousel-dot.active {
+        background: var(--primary-color);
+        width: 40px;
+        border-radius: 5px;
+        border-color: rgba(255,255,255,0.3);
+    }
+
+    /* Progress Bar */
+    .carousel-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        background: var(--primary-color);
+        width: 0;
+        z-index: 10;
+        transition: width 0.1s linear;
+    }
+
+    /* Banner Lateral */
+    .banner-lateral {
+        background: rgba(22, 33, 62, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .banner-lateral:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+        border-color: var(--primary-color);
+    }
+
+    .banner-lateral-img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .banner-lateral-content {
+        padding: 1rem;
+    }
+
+    .banner-lateral-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-light);
+        margin-bottom: 0.5rem;
+    }
+
+    .banner-lateral-subtitle {
+        font-size: 0.9rem;
+        color: rgba(234, 234, 234, 0.7);
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 107, 107, 0.1) 0%, transparent 70%);
+        animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 900;
+        background: linear-gradient(45deg, #fff, var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem;
+        color: rgba(234, 234, 234, 0.9);
+        margin-bottom: 2rem;
+    }
+
+    .feature-card {
+        background: rgba(22, 33, 62, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.4s ease;
+        height: 100%;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
+        border-color: var(--primary-color);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        background: linear-gradient(45deg, var(--primary-color), var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+    }
+
+    .feature-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-light);
+    }
+
+    .stats-section {
+        background: rgba(22, 33, 62, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        margin: 3rem 0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 900;
+        background: linear-gradient(45deg, var(--primary-color), var(--accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .stat-label {
+        color: rgba(234, 234, 234, 0.8);
+        font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+        .banner-title {
+            font-size: 1.5rem;
+        }
+        .banners-carousel {
+            height: 300px;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block contenido %}
-<div class="p-5 mb-4 bg-white rounded-3 shadow-sm text-center">
-    <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold">Bienvenido al Mundo Anime</h1>
-        <p class="col-md-8 fs-4 mx-auto">Noticias, reseñas y todo sobre tus series favoritas en un solo lugar.</p>
-        <a href="{% url 'apps.posts:posts' %}" class="btn btn-primary btn-lg" type="button">Ver Artículos</a>
+<!-- Carousel de Banners Principales -->
+{% if banners_principales %}
+<div class="banners-carousel animate-in">
+    {% for banner in banners_principales %}
+    <div class="banner-slide {% if forloop.first %}active{% endif %}" 
+         {% if banner.imagen %}style="background-image: url('{{ banner.imagen.url }}');"{% endif %}>
+        <div class="banner-overlay">
+            <div class="container">
+                <h2 class="banner-title">{{ banner.titulo }}</h2>
+                {% if banner.subtitulo %}
+                <p class="banner-subtitle">{{ banner.subtitulo }}</p>
+                {% endif %}
+                {% if banner.link %}
+                <a href="{{ banner.link }}" class="btn btn-custom btn-lg mt-3" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> Ver más
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+    {% if banners_principales|length > 1 %}
+    <div class="carousel-controls">
+        {% for banner in banners_principales %}
+        <div class="carousel-dot {% if forloop.first %}active{% endif %}" data-slide="{{ forloop.counter0 }}"></div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="row">
+    <!-- Contenido Principal -->
+    <div class="col-lg-8">
+        <!-- Hero Section -->
+        <div class="hero-section text-center animate-in">
+            <div class="hero-content">
+                <h1 class="hero-title">Bienvenido al Mundo Anime</h1>
+                <p class="hero-subtitle">Noticias, reseñas y todo sobre tus series favoritas en un solo lugar</p>
+                <a href="{% url 'apps.posts:posts' %}" class="btn btn-custom btn-lg">
+                    <i class="fas fa-rocket"></i> Explorar Artículos
+                </a>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="row mb-5">
+            <div class="col-md-4 mb-4 animate-in">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h3 class="feature-title">Noticias Diarias</h3>
+                    <p class="text-muted">Mantente al día con las últimas novedades del mundo del anime</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 animate-in" style="animation-delay: 0.1s;">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="feature-title">Reseñas Exclusivas</h3>
+                    <p class="text-muted">Análisis profundos de tus series y películas favoritas</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 animate-in" style="animation-delay: 0.2s;">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Comunidad Activa</h3>
+                    <p class="text-muted">Comparte opiniones y conecta con otros fans del anime</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar con Banners Laterales -->
+    <div class="col-lg-4">
+        <h3 class="mb-4" style="color: var(--secondary-color); font-weight: 700;">
+            <i class="fas fa-fire"></i> Destacados
+        </h3>
+        
+        {% if banners_laterales %}
+            {% for banner in banners_laterales %}
+            <a href="{% if banner.link %}{{ banner.link }}{% else %}#{% endif %}" 
+               class="banner-lateral" 
+               {% if banner.link %}target="_blank"{% endif %}>
+                {% if banner.imagen %}
+                <img src="{{ banner.imagen.url }}" class="banner-lateral-img" alt="{{ banner.titulo }}">
+                {% endif %}
+                <div class="banner-lateral-content">
+                    <h4 class="banner-lateral-title">{{ banner.titulo }}</h4>
+                    {% if banner.subtitulo %}
+                    <p class="banner-lateral-subtitle">{{ banner.subtitulo }}</p>
+                    {% endif %}
+                </div>
+            </a>
+            {% endfor %}
+        {% else %}
+            <!-- Banners por defecto si no hay banners laterales -->
+            <div class="banner-lateral" style="cursor: default;">
+                <div class="banner-lateral-img" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-newspaper" style="font-size: 3rem; color: white;"></i>
+                </div>
+                <div class="banner-lateral-content">
+                    <h4 class="banner-lateral-title">Últimas Noticias</h4>
+                    <p class="banner-lateral-subtitle">Descubre las novedades más recientes</p>
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
+
+<!-- Stats Section -->
+<div class="stats-section animate-in">
+    <div class="row">
+        <div class="col-md-3 col-6 mb-3">
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Artículos</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-3">
+            <div class="stat-item">
+                <div class="stat-number">10K+</div>
+                <div class="stat-label">Lectores</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-3">
+            <div class="stat-item">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Categorías</div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-3">
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Actualizado</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="text-center my-5 animate-in">
+    <h2 class="mb-4" style="color: var(--text-light); font-weight: 700;">
+        ¿Listo para comenzar?
+    </h2>
+    <p class="lead mb-4" style="color: rgba(234, 234, 234, 0.8);">
+        Únete a nuestra comunidad y descubre el mejor contenido anime
+    </p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a href="{% url 'apps.posts:posts' %}" class="btn btn-custom btn-lg">
+            <i class="fas fa-book-open"></i> Ver Artículos
+        </a>
+        {% if not user.is_authenticated %}
+        <a href="{% url 'apps.usuario:registro' %}" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-user-plus"></i> Crear Cuenta
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Carousel de banners
+document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.banner-slide');
+    const dots = document.querySelectorAll('.carousel-dot');
+    
+    if (slides.length > 1) {
+        let currentSlide = 0;
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            currentSlide = (n + slides.length) % slides.length;
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+        
+        // Auto-avance cada 5 segundos
+        setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 5000);
+        
+        // Control manual con dots
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => {
+                showSlide(i);
+            });
+        });
+    }
+});
+</script>
 {% endblock %}

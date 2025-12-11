@@ -1,58 +1,379 @@
 {% extends 'base.html' %}
-{% load static %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 900;
+        background: linear-gradient(45deg, #fff, var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Cards de posts más compactas */
+    .post-card {
+        background: rgba(22, 33, 62, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 1.5rem;
+    }
+
+    .post-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(255, 107, 107, 0.25);
+        border-color: var(--primary-color);
+    }
+
+    .post-card-horizontal {
+        display: flex;
+        flex-direction: row;
+        height: 200px;
+    }
+
+    .post-card-img-wrapper {
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+        width: 300px;
+    }
+
+    .post-card-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .post-card:hover .post-card-img {
+        transform: scale(1.08);
+    }
+
+    .post-card-body {
+        padding: 1.2rem 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .post-category {
+        display: inline-block;
+        background: linear-gradient(45deg, var(--primary-color), var(--accent));
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .post-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0.3rem 0 0.5rem;
+        color: var(--text-light);
+        line-height: 1.3;
+        text-decoration: none;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .post-title:hover {
+        color: var(--secondary-color);
+    }
+
+    .post-excerpt {
+        color: rgba(234, 234, 234, 0.7);
+        margin: 0.3rem 0;
+        font-size: 0.88rem;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .post-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.82rem;
+        color: rgba(234, 234, 234, 0.6);
+        flex-wrap: wrap;
+        margin-top: 0.5rem;
+    }
+
+    .post-meta i {
+        color: var(--secondary-color);
+        font-size: 0.75rem;
+    }
+
+    .sidebar-card {
+        background: rgba(22, 33, 62, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--secondary-color);
+    }
+
+    .category-item {
+        display: block;
+        padding: 0.7rem 0.8rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+        color: var(--text-light);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+
+    .category-item:hover {
+        background: linear-gradient(45deg, var(--primary-color), var(--accent));
+        transform: translateX(5px);
+        color: white;
+    }
+
+    .category-item.active {
+        background: linear-gradient(45deg, var(--primary-color), var(--accent));
+    }
+
+    .filter-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-light);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 0.88rem;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+    }
+
+    .btn-read-more {
+        background: linear-gradient(45deg, var(--primary-color), var(--accent));
+        border: none;
+        padding: 0.4rem 1.2rem;
+        border-radius: 20px;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .btn-read-more:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        color: white;
+    }
+
+    .pagination {
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .page-link {
+        background: rgba(22, 33, 62, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-light);
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+    }
+
+    .page-link:hover {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+    }
+
+    .page-item.active .page-link {
+        background: linear-gradient(45deg, var(--primary-color), var(--accent));
+        border-color: var(--primary-color);
+    }
+
+    @media (max-width: 768px) {
+        .post-card-horizontal {
+            flex-direction: column;
+            height: auto;
+        }
+        .post-card-img-wrapper {
+            width: 100%;
+            height: 200px;
+        }
+        .page-title {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block contenido %}
-<div class="container mt-4">
-  <div class="row">
-    <!-- Sidebar de filtros -->
+<div class="page-header animate-in">
+    <h1 class="page-title"><i class="fas fa-newspaper"></i> Artículos de Anime</h1>
+    <p style="color: rgba(234, 234, 234, 0.8);">Descubre las últimas noticias y reseñas</p>
+</div>
+
+<div class="row">
+    <!-- Sidebar de Filtros -->
     <div class="col-lg-3 mb-4">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title mb-3">Filtrar por categoría</h5>
-          <div class="list-group list-group-flush">
-            <a href="{% url 'apps.posts:posts' %}" class="list-group-item list-group-item-action">Todas</a>
+        <div class="sidebar-card animate-in">
+            <h4 class="sidebar-title"><i class="fas fa-filter"></i> Filtros</h4>
+            
+            <!-- Categorías -->
+            <h6 class="text-muted mb-3">Categorías</h6>
+            <a href="{% url 'apps.posts:posts' %}" class="category-item {% if not request.GET.categoria %}active{% endif %}">
+                <i class="fas fa-th-large"></i> Todas las categorías
+            </a>
             {% for cat in categorias %}
-              <a href="?categoria={{ cat.id }}" class="list-group-item list-group-item-action">{{ cat.nombre }}</a>
+                <a href="?categoria={{ cat.id }}" class="category-item {% if request.GET.categoria == cat.id|stringformat:'s' %}active{% endif %}">
+                    <i class="fas fa-tag"></i> {{ cat.nombre }}
+                    <span class="badge bg-danger float-end">{{ cat.post_set.count }}</span>
+                </a>
             {% endfor %}
-          </div>
-          
-          <h5 class="card-title">Ordenar por</h5>
-          <div class="d-grid gap-2">
-            <a href="?orden=nuevo" class="btn btn-sm btn-outline-primary">Más recientes</a>
-            <a href="?orden=antiguo" class="btn btn-sm btn-outline-primary">Más antiguos</a>
-          </div>
+            
+            <!-- Ordenar -->
+            <h6 class="text-muted mt-4 mb-3">Ordenar por</h6>
+            <div class="d-grid gap-2">
+                <a href="?orden=nuevo{% if request.GET.categoria %}&categoria={{ request.GET.categoria }}{% endif %}" 
+                class="filter-btn {% if request.GET.orden != 'antiguo' %}active{% endif %}">
+                    <i class="fas fa-arrow-down"></i> Más Nuevos
+                </a>
+                <a href="?orden=antiguo{% if request.GET.categoria %}&categoria={{ request.GET.categoria }}{% endif %}" 
+                class="filter-btn {% if request.GET.orden == 'antiguo' %}active{% endif %}">
+                    <i class="fas fa-arrow-up"></i> Más Antiguos
+                </a>
+            </div>
         </div>
-      </div>
+
+        <!-- Info Card -->
+        <div class="sidebar-card animate-in">
+            <h4 class="sidebar-title"><i class="fas fa-info-circle"></i> Acerca de</h4>
+            <p style="font-size: 0.9rem; color: rgba(234, 234, 234, 0.8);">
+                Tu fuente definitiva de noticias, reseñas y análisis del mundo del anime y manga.
+            </p>
+        </div>
     </div>
 
-    <!-- Posts -->
+    <!-- Lista de Posts -->
     <div class="col-lg-9">
-      <h2 class="mb-4">Últimos Artículos</h2>
-      
-      {% if posts %}
-        <div class="posts-grid">
-          {% for post in posts %}
-            <div class="post-card">
-              {% if post.imagen %}
-                <img src="{{ post.imagen.url }}" class="post-image" alt="{{ post.titulo }}">
-              {% else %}
-                <div class="post-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-              {% endif %}
-              <div class="post-body">
-                <h3 class="post-title">{{ post.titulo }}</h3>
-                <div class="post-meta">{{ post.categoria }} • {{ post.fecha|date:"d M Y" }}</div>
-                <p class="post-excerpt">{{ post.subtitulo }}</p>
-                <div class="post-footer">
-                  <a href="{% url 'apps.posts:post_individual' post.id %}" class="read-more">Leer más →</a>
-                </div>
-              </div>
+        {% if posts %}
+            <div class="mb-3 text-muted">
+                <i class="fas fa-list"></i> Mostrando {{ posts|length }} artículos
             </div>
-          {% endfor %}
-        </div>
-      {% else %}
-        <div class="alert alert-warning mt-4">No hay artículos publicados aún.</div>
-      {% endif %}
+
+            {% for post in posts %}
+            <div class="post-card post-card-horizontal animate-in" style="animation-delay: {{ forloop.counter0|add:0 }}00ms;">
+                <div class="post-card-img-wrapper">
+                    {% if post.imagen %}
+                        <img src="{{ post.imagen.url }}" class="post-card-img" alt="{{ post.titulo }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/300x200/16213e/ffffff?text=Sin+Imagen" class="post-card-img" alt="{{ post.titulo }}">
+                    {% endif %}
+                </div>
+                <div class="post-card-body">
+                    <div>
+                        <span class="post-category">
+                            <i class="fas fa-tag"></i> {{ post.categoria|default:"General" }}
+                        </span>
+                        <a href="{% url 'apps.posts:post_individual' post.id %}" style="text-decoration: none;">
+                            <h3 class="post-title">{{ post.titulo }}</h3>
+                        </a>
+                        <p class="post-excerpt">{{ post.texto|truncatewords:18 }}</p>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="post-meta">
+                            <span>
+                                <i class="fas fa-user"></i> {{ post.autor.username|default:"Admin" }}
+                            </span>
+                            <span>
+                                <i class="fas fa-calendar"></i> {{ post.fecha|date:"d M" }}
+                            </span>
+                            <span>
+                                <i class="fas fa-comments"></i> {{ post.comentarios.count }}
+                            </span>
+                        </div>
+                        <a href="{% url 'apps.posts:post_individual' post.id %}" class="btn-read-more">
+                            <i class="fas fa-arrow-right"></i> Leer
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Paginación -->
+            {% if is_paginated %}
+            <nav aria-label="Paginación" class="mt-4">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1{% if request.GET.categoria %}&categoria={{ request.GET.categoria }}{% endif %}{% if request.GET.orden %}&orden={{ request.GET.orden }}{% endif %}">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.categoria %}&categoria={{ request.GET.categoria }}{% endif %}{% if request.GET.orden %}&orden={{ request.GET.orden }}{% endif %}">
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">{{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.categoria %}&categoria={{ request.GET.categoria }}{% endif %}{% if request.GET.orden %}&orden={{ request.GET.orden }}{% endif %}">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.categoria %}&categoria={{ request.GET.categoria }}{% endif %}{% if request.GET.orden %}&orden={{ request.GET.orden }}{% endif %}">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        {% else %}
+            <div class="alert alert-warning animate-in" style="background: rgba(255, 193, 7, 0.2); border: 1px solid rgba(255, 193, 7, 0.3); color: var(--text-light);">
+                <h4><i class="fas fa-exclamation-triangle"></i> No hay artículos disponibles</h4>
+                <p class="mb-0">No se encontraron artículos con los filtros seleccionados.</p>
+            </div>
+        {% endif %}
     </div>
-  </div>
 </div>
 {% endblock %}
