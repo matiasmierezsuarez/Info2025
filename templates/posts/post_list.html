@@ -1,52 +1,58 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block contenido %}
-<div class="row">
-    <div class="col-md-3 mb-4">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">Filtrar</div>
-            <div class="card-body">
-                <h6 class="card-title">Categorías</h6>
-                <div class="list-group list-group-flush mb-3">
-                    <a href="{% url 'apps.posts:posts' %}" class="list-group-item list-group-item-action">Todas</a>
-                    {% for cat in categorias %}
-                        <a href="?categoria={{ cat.id }}" class="list-group-item list-group-item-action">{{ cat.nombre }}</a>
-                    {% endfor %}
-                </div>
-                
-                <h6 class="card-title">Orden</h6>
-                <div class="d-grid gap-2">
-                    <a href="?orden=nuevo" class="btn btn-outline-secondary btn-sm">Más Nuevos</a>
-                    <a href="?orden=antiguo" class="btn btn-outline-secondary btn-sm">Más Antiguos</a>
-                </div>
-            </div>
+<div class="container mt-4">
+  <div class="row">
+    <!-- Sidebar de filtros -->
+    <div class="col-lg-3 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Filtrar por categoría</h5>
+          <div class="list-group list-group-flush">
+            <a href="{% url 'apps.posts:posts' %}" class="list-group-item list-group-item-action">Todas</a>
+            {% for cat in categorias %}
+              <a href="?categoria={{ cat.id }}" class="list-group-item list-group-item-action">{{ cat.nombre }}</a>
+            {% endfor %}
+          </div>
+          
+          <h5 class="card-title">Ordenar por</h5>
+          <div class="d-grid gap-2">
+            <a href="?orden=nuevo" class="btn btn-sm btn-outline-primary">Más recientes</a>
+            <a href="?orden=antiguo" class="btn btn-sm btn-outline-primary">Más antiguos</a>
+          </div>
         </div>
+      </div>
     </div>
 
-    <div class="col-md-9">
-        <h2>Últimos Artículos</h2>
-        <hr>
-        {% for post in posts %}
-        <div class="card mb-3 shadow-sm">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    {% if post.imagen %}
-                        <img src="{{ post.imagen.url }}" class="img-fluid rounded-start" alt="{{ post.titulo }}" style="height: 200px; object-fit: cover; width: 100%;">
-                    {% endif %}
+    <!-- Posts -->
+    <div class="col-lg-9">
+      <h2 class="mb-4">Últimos Artículos</h2>
+      
+      {% if posts %}
+        <div class="posts-grid">
+          {% for post in posts %}
+            <div class="post-card">
+              {% if post.imagen %}
+                <img src="{{ post.imagen.url }}" class="post-image" alt="{{ post.titulo }}">
+              {% else %}
+                <div class="post-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+              {% endif %}
+              <div class="post-body">
+                <h3 class="post-title">{{ post.titulo }}</h3>
+                <div class="post-meta">{{ post.categoria }} • {{ post.fecha|date:"d M Y" }}</div>
+                <p class="post-excerpt">{{ post.subtitulo }}</p>
+                <div class="post-footer">
+                  <a href="{% url 'apps.posts:post_individual' post.id %}" class="read-more">Leer más →</a>
                 </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ post.titulo }}</h5>
-                        <p class="text-muted"><small>{{ post.categoria }} | {{ post.fecha|date:"d M Y" }}</small></p>
-                        <p class="card-text">{{ post.subtitulo }}</p>
-                        <a href="{% url 'apps.posts:post_individual' post.id %}" class="btn btn-dark btn-sm">Leer más</a>
-                    </div>
-                </div>
+              </div>
             </div>
+          {% endfor %}
         </div>
-        {% empty %}
-            <div class="alert alert-warning">No hay artículos publicados aún.</div>
-        {% endfor %}
+      {% else %}
+        <div class="alert alert-warning mt-4">No hay artículos publicados aún.</div>
+      {% endif %}
     </div>
+  </div>
 </div>
 {% endblock %}

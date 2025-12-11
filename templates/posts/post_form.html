@@ -1,23 +1,45 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block contenido %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow">
-            <div class="card-header bg-dark text-white">
-                <h4>{% if object %}Editar{% else %}Nuevo{% endif %} Artículo</h4>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="mb-4">{% if object %}Editar{% else %}Nuevo{% endif %} Artículo</h2>
+          
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+          {% endif %}
+
+          <form method="post" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+            
+            {% for field in form %}
+              <div class="mb-3">
+                <label for="id_{{ field.name }}" class="form-label">{{ field.label }}</label>
+                {% if field.field.widget.input_type == 'textarea' %}
+                  <textarea name="{{ field.name }}" id="id_{{ field.name }}" class="form-control" rows="6">{{ field.value|default:'' }}</textarea>
+                {% elif field.field.widget.input_type == 'file' %}
+                  <input type="file" name="{{ field.name }}" id="id_{{ field.name }}" class="form-control">
+                {% else %}
+                  {{ field }}
+                {% endif %}
+                {% if field.errors %}
+                  <div class="form-text text-danger">{{ field.errors|striptags }}</div>
+                {% endif %}
+              </div>
+            {% endfor %}
+            
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary flex-grow-1">Guardar Artículo</button>
+              <a href="{% url 'apps.posts:posts' %}" class="btn btn-secondary flex-grow-1">Cancelar</a>
             </div>
-            <div class="card-body">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        {{ form.as_p }}
-                    </div>
-                    <button type="submit" class="btn btn-success w-100">Guardar</button>
-                    <a href="{% url 'apps.posts:posts' %}" class="btn btn-secondary w-100">Cancelar</a>
-                </form>
-            </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}
