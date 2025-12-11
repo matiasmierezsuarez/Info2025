@@ -1,13 +1,378 @@
-body { 
-    background-color: #f4f4f9;
-}
-.navbar-brand { 
-    font-weight: bold; color: #ff6b6b !important;
-}
-.footer { 
-    background-color: #2c3e50; color: white; padding: 20px 0; margin-top: 40px; 
+/* Global */
+body {
+    background-color: #f8fafc;  /* soft tone to contrast navbar */
+    color: #1f2937;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    line-height: 1.6;
 }
 
-.mt-4 {
-    min-height: 80vh;
+/* Navbar tweaks */
+.navbar-brand {
+    font-weight: 700;
+    color: #ff6b6b !important;
+    letter-spacing: 0.2px;
+}
+.navbar-nav .nav-link {
+    color: rgba(255,255,255,0.92);
+    transition: color .15s ease-in-out, transform .05s;
+}
+.navbar-nav .nav-link:hover {
+    color: #f1f5f9;
+    transform: translateY(-1px);
+}
+.navbar-nav .btn {
+    line-height: 1.2;
+}
+
+/* Dropdown alignment and items */
+.dropdown-menu {
+    min-width: 12rem;
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(31,41,55,0.12);
+}
+.dropdown-item:focus, .dropdown-item:hover {
+    background-color: rgba(255,255,255,0.06);
+}
+
+/* Container / layout */
+.container.mt-4 {
+    min-height: 72vh;
+}
+
+/* Footer */
+.footer {
+    background-color: #111827; /* darker to match navbar */
+    color: #e6eef8;
+    padding: 18px 0;
+    margin-top: 40px;
+}
+.footer p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* Buttons */
+.btn-outline-light {
+    border-color: rgba(255,255,255,0.18);
+    color: #fff;
+}
+.btn-outline-light:hover {
+    background-color: rgba(255,255,255,0.06);
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+    .navbar-brand { font-size: 1rem; }
+    .navbar-nav { margin-top: .5rem; }
+}
+
+/* Utility (keep existing named class behavior) */
+.mt-4 { min-height: 80vh; }
+
+/* small helper to highlight current nav link */
+.nav-link.active {
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* ----------------------------------------------------------------------------------
+     Tema inspirado - tipografía, colores y tarjetas de post
+     - Tipografía: usar 'Inter' para sans, con fallbacks
+     - Paleta: fondo claro, acento coral, textos oscuros y cartas claras
+ ---------------------------------------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+:root{
+    --bg: #fbfbfc;
+    --surface: #ffffff;
+    --muted: #64748b; /* slate-500 */
+    --text: #0f172a; /* slate-900 */
+    --accent: #ff6b6b; /* coral accent */
+    --card-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+html, body{
+    height: 100%;
+    background: linear-gradient(180deg, var(--bg) 0%, #f1f5f9 100%);
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    color: var(--text);
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+    color: var(--text);
+    letter-spacing: -0.2px;
+    font-weight: 700;
+}
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.6rem; }
+
+/* Navbar - accent brand */
+.navbar {
+    background: linear-gradient(90deg, rgba(17,24,39,1) 0%, rgba(15,23,42,0.95) 100%);
+}
+.navbar-brand {
+    color: var(--accent) !important;
+    font-weight: 800;
+    font-size: 1.05rem;
+}
+
+/* Post card styles */
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+.post-card{
+    background: var(--surface);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: transform .18s ease, box-shadow .18s ease;
+    display: flex;
+    flex-direction: column;
+}
+.post-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 18px 50px rgba(15,23,42,0.12);
+}
+.post-card .post-image{
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+.post-card .post-body{
+    padding: 1rem 1.15rem 1.2rem 1.15rem;
+    flex: 1 1 auto;
+}
+.post-title{
+    font-size: 1.05rem;
+    margin: 0 0 .45rem 0;
+    color: #081126;
+}
+.post-meta{
+    font-size: .84rem;
+    color: var(--muted);
+    margin-bottom: .6rem;
+}
+.post-excerpt{
+    color: #334155;
+    font-size: .95rem;
+    margin-bottom: .9rem;
+}
+.post-footer{
+    margin-top: auto; /* stick to bottom */
+    display:flex; align-items:center; justify-content:space-between;
+}
+.read-more{
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+.read-more:hover{ text-decoration: underline; }
+
+/* Featured header card (optional) */
+.hero-card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+    border-radius: 14px;
+    padding: 1.25rem;
+    box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+}
+
+/* Small utilities */
+.muted { color: var(--muted); }
+.accent { color: var(--accent); }
+
+@media (max-width: 768px){
+    .post-card .post-image{ height: 140px; }
+}
+
+/* ----------------------------------------------------------------------------------
+   Estilos de formularios (Registro, Login, etc.)
+ ---------------------------------------------------------------------------------- */
+
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.card-body {
+    background: var(--surface);
+}
+
+.form-label {
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-control, .form-control:focus {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.95rem;
+    transition: all .2s ease;
+}
+.form-control:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+
+.form-text.text-danger {
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    color: #dc2626;
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    border: none;
+    font-weight: 600;
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    transition: all .2s ease;
+}
+.btn-primary:hover, .btn-primary:active {
+    background-color: #ff5252;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(255, 107, 107, 0.25);
+}
+
+/* Link de "Ya tienes cuenta" */
+.card-body a {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+.card-body a:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    border-radius: 8px;
+    border: none;
+    font-size: 0.95rem;
+}
+.alert-danger {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+/* Estilos para etiquetas y badges */
+.badge {
+    font-weight: 600;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+}
+
+/* Container principal */
+.container {
+    max-width: 1200px;
+}
+
+/* Línea separadora */
+hr {
+    border-color: #e2e8f0;
+    margin: 1.5rem 0;
+}
+
+/* Links generales */
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color .15s ease;
+}
+a:hover {
+    color: #ff5252;
+    text-decoration: underline;
+}
+
+/* Sidebar de filtros */
+.list-group-item {
+    border-color: #e2e8f0;
+    transition: all .2s ease;
+}
+.list-group-item-action:hover, .list-group-item-action:focus {
+    background-color: #f8fafc;
+    color: var(--text);
+}
+
+/* Textos pequeños */
+small {
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px){
+    .post-card .post-image{ height: 140px; }
+    .card-body { padding: 1.25rem !important; }
+}
+
+/* desde acá empieza el cambio */
+/* Contenedor principal oscuro */
+.contact-dark-section {
+    background-color: #2c3e50; /* Usamos el color de tu footer para consistencia */
+    /* Opcional: Un gradiente sutil para darle profundidad */
+    background: linear-gradient(145deg, #2c3e50 0%, #1a252f 100%);
+    border-radius: 1rem;
+    padding: 3rem 1.5rem;
+    color: white;
+}
+
+/* Inputs personalizados estilo "Glass" */
+.form-control-dark {
+    background-color: rgba(255, 255, 255, 0.05); /* Fondo semitransparente (bg-white/5) */
+    border: 1px solid rgba(255, 255, 255, 0.2);   /* Borde sutil (border-white/20) */
+    color: #fff !important;                        /* Texto blanco */
+    padding: 0.8rem 1rem;
+    border-radius: 0.5rem;
+}
+
+/* Placeholder color (Bootstrap necesita prefijos) */
+.form-control-dark::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Efecto al hacer clic en el input */
+.form-control-dark:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #ff6b6b; /* Tu color de acento */
+    box-shadow: 0 0 0 0.25rem rgba(255, 107, 107, 0.25);
+}
+
+/* Etiquetas */
+.form-label-dark {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Botón de envío */
+.btn-anime-submit {
+    background-color: #ff6b6b;
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    border-radius: 0.5rem;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-anime-submit:hover {
+    background-color: #ff4757;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+.link-anime {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 500;
+}
+.link-anime:hover {
+    color: #ff4757;
+    text-decoration: underline;
 }

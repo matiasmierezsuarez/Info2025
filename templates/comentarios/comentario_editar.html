@@ -1,17 +1,38 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block contenido %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7 col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="mb-4">Editar Comentario</h2>
+          
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+          {% endif %}
 
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <h2>Editar Comentario</h2>
-        <form method="post">
+          <form method="post" novalidate>
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-            <a href="{% url 'apps.posts:post_individual' pk=comentario.post.pk %}" class="btn btn-secondary">Cancelar</a>
-        </form>
+            
+            <div class="mb-3">
+              <label for="id_texto" class="form-label">Tu comentario</label>
+              <textarea name="texto" id="id_texto" class="form-control" rows="5">{{ form.texto.value|default:'' }}</textarea>
+              {% if form.texto.errors %}
+                <div class="form-text text-danger">{{ form.texto.errors|striptags }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary flex-grow-1">Guardar Cambios</button>
+              <a href="{% url 'apps.posts:post_individual' pk=comentario.post.pk %}" class="btn btn-secondary flex-grow-1">Cancelar</a>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 {% endblock %}
