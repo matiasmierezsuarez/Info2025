@@ -6,12 +6,16 @@
     /* Carousel de Banners Principales - Estilo Kudasai */
     .banners-carousel {
         position: relative;
-        height: 600px;
+        height: 500px;
+        width: 100%;
         overflow: hidden;
         margin-bottom: 3rem;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         border-radius: 0;
-    }
+        }
+
+
+
 
     .banner-slide {
         position: absolute;
@@ -334,14 +338,16 @@
                 {% if banner.imagen %}style="background-image: url('{{ banner.imagen.url }}');"{% endif %}>
                 <div class="banner-overlay">
                     <div class="container">
-                        <h2 class="banner-title">{{ banner.titulo }}</h2>
-                        {% if banner.subtitulo %}
-                        <p class="banner-subtitle">{{ banner.subtitulo }}</p>
-                        {% endif %}
-                        {% if banner.link %}
-                        <a href="{{ banner.link }}" class="btn btn-custom btn-lg mt-3" target="_blank">
-                            <i class="fas fa-external-link-alt"></i> Ver más
-                        </a>
+                        {% if banner.categoria %}
+                            <h2 class="banner-title">{{ banner.titulo }}</h2>
+                            {% if banner.subtitulo %}
+                            <p class="banner-subtitle">{{ banner.subtitulo }}</p>
+                            {% endif %}
+                            {% if banner.link %}
+                            <a href="{{ banner.link }}" class="btn btn-custom btn-lg mt-3" target="_blank">
+                                <i class="fas fa-external-link-alt"></i> Ver más
+                            </a>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
