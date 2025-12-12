@@ -323,38 +323,40 @@
 {% endblock %}
 
 {% block contenido %}
-<!-- Carousel de Banners Principales -->
-{% if banners_principales %}
-<div class="banners-carousel animate-in">
-    {% for banner in banners_principales %}
-    <div class="banner-slide {% if forloop.first %}active{% endif %}" 
-         {% if banner.imagen %}style="background-image: url('{{ banner.imagen.url }}');"{% endif %}>
-        <div class="banner-overlay">
-            <div class="container">
-                <h2 class="banner-title">{{ banner.titulo }}</h2>
-                {% if banner.subtitulo %}
-                <p class="banner-subtitle">{{ banner.subtitulo }}</p>
-                {% endif %}
-                {% if banner.link %}
-                <a href="{{ banner.link }}" class="btn btn-custom btn-lg mt-3" target="_blank">
-                    <i class="fas fa-external-link-alt"></i> Ver más
-                </a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    {% endfor %}
     
-    {% if banners_principales|length > 1 %}
-    <div class="carousel-controls">
-        {% for banner in banners_principales %}
-        <div class="carousel-dot {% if forloop.first %}active{% endif %}" data-slide="{{ forloop.counter0 }}"></div>
-        {% endfor %}
-    </div>
-    {% endif %}
-</div>
-{% endif %}
 
+    
+        <!-- Carousel de Banners Principales -->
+        {% if banners_principales %}
+        <div class="banners-carousel animate-in">
+            {% for banner in banners_principales %}
+            <div class="banner-slide {% if forloop.first %}active{% endif %}" 
+                {% if banner.imagen %}style="background-image: url('{{ banner.imagen.url }}');"{% endif %}>
+                <div class="banner-overlay">
+                    <div class="container">
+                        <h2 class="banner-title">{{ banner.titulo }}</h2>
+                        {% if banner.subtitulo %}
+                        <p class="banner-subtitle">{{ banner.subtitulo }}</p>
+                        {% endif %}
+                        {% if banner.link %}
+                        <a href="{{ banner.link }}" class="btn btn-custom btn-lg mt-3" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Ver más
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            {% if banners_principales|length > 1 %}
+            <div class="carousel-controls">
+                {% for banner in banners_principales %}
+                <div class="carousel-dot {% if forloop.first %}active{% endif %}" data-slide="{{ forloop.counter0 }}"></div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
 <div class="row">
     <!-- Contenido Principal -->
     <div class="col-lg-8">
@@ -399,6 +401,36 @@
                 </div>
             </div>
         </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section animate-in">
+            <div class="row">
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Artículos</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-item">
+                        <div class="stat-number">10K+</div>
+                        <div class="stat-label">Lectores</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Categorías</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Actualizado</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Sidebar con Banners Laterales -->
@@ -438,36 +470,6 @@
     </div>
 </div>
 
-<!-- Stats Section -->
-<div class="stats-section animate-in">
-    <div class="row">
-        <div class="col-md-3 col-6 mb-3">
-            <div class="stat-item">
-                <div class="stat-number">500+</div>
-                <div class="stat-label">Artículos</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6 mb-3">
-            <div class="stat-item">
-                <div class="stat-number">10K+</div>
-                <div class="stat-label">Lectores</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6 mb-3">
-            <div class="stat-item">
-                <div class="stat-number">50+</div>
-                <div class="stat-label">Categorías</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-6 mb-3">
-            <div class="stat-item">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Actualizado</div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- CTA Section -->
 <div class="text-center my-5 animate-in">
     <h2 class="mb-4" style="color: var(--text-light); font-weight: 700;">
@@ -487,6 +489,7 @@
         {% endif %}
     </div>
 </div>
+
 {% endblock %}
 
 {% block extra_js %}

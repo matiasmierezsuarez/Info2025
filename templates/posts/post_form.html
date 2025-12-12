@@ -5,7 +5,7 @@
     <div class="col-lg-8">
         <div class="form-card animate-in">
             <div class="card-header">
-                <h4 class="mb-0">
+                <h4 class="mb-2">
                     <i class="fas fa-{% if object %}edit{% else %}plus{% endif %}"></i>
                     {% if object %}Editar{% else %}Nuevo{% endif %} Artículo
                 </h4>
@@ -14,36 +14,36 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 
-                <div class="mb-3">
-                    <label for="id_titulo" class="form-label">
-                        <i class="fas fa-heading"></i> Título
-                    </label>
+                <div class="form-floating mb-3 shadow-sm rounded">
                     {{ form.titulo }}
+                    <label for="id_titulo" class="form-label" aria-placeholder="Titulo">
+                    </label>
                     {% if form.titulo.errors %}
                         <div class="text-danger mt-2">{{ form.titulo.errors }}</div>
                     {% endif %}
                 </div>
 
-                <div class="mb-3">
+                <div class="form-floating mb-3 shadow-sm rounded">
+                    {{ form.categoria }}
                     <label for="id_categoria" class="form-label">
                         <i class="fas fa-tag"></i> Categoría
                     </label>
-                    {{ form.categoria }}
                     {% if form.categoria.errors %}
                         <div class="text-danger mt-2">{{ form.categoria.errors }}</div>
                     {% endif %}
                 </div>
 
-                <div class="mb-3">
-                    <label for="id_texto" class="form-label">
-                        <i class="fas fa-align-left"></i> Contenido
-                    </label>
+                <div class="form-floating mb-3 shadow-sm rounded">
+                    
                     {{ form.texto }}
+
+                    <label for="id_texto" class="form-label">
+                    </label>
+
                     {% if form.texto.errors %}
                         <div class="text-danger mt-2">{{ form.texto.errors }}</div>
                     {% endif %}
                 </div>
-
                 <div class="mb-3">
                     <label for="id_imagen" class="form-label">
                         <i class="fas fa-image"></i> Imagen
