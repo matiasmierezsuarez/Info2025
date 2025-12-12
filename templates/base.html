@@ -32,6 +32,11 @@
                             <i class="fas fa-newspaper"></i> Artículos
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'apps.contacto:contacto' %}">
+                            <i class="fas fa-envelope"></i> Contacto
+                        </a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
