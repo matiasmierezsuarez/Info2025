@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
 {% block contenido %}
-<div class="p-5 mb-4 bg-white rounded-3 shadow-sm text-center">
+<div class="p-5 mb-4 bg-white rounded-3 shadow-sm text-center" style="background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));">
     <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold text-success">¡Mensaje Enviado!</h1>
+        <h1 class="display-5 fw-bold" style="background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">¡Mensaje Enviado!</h1>
         <p class="col-md-8 fs-4 mx-auto">Gracias por contactarnos. Responderemos a tu consulta tan pronto como sea posible.</p>
         <a href="{% url 'index' %}" class="btn btn-primary btn-lg" type="button">Volver al Inicio</a>
+        
     </div>
 </div>
 {% endblock %}
